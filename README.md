@@ -112,8 +112,8 @@ For extended versions:
 
 ## 4. Quick Start
 
-pip install -r requirements.txt
-python ./app.py
+- pip install -r requirements.txt
+- python ./app.py
 
 Navigate to `http://localhost:5000` for the landing page or use any REST client
 against the `/api/*` endpoints.
