@@ -1,0 +1,403 @@
+:root {
+  --primary-color: #0d6efd;
+  --success-color: #198754;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --light-bg: #f8f9fa;
+}
+
+* {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+nav.navbar {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+main.container {
+  max-width: 1100px;
+  flex: 1;
+}
+
+.card {
+  border: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.card.shadow-sm {
+  border: none;
+}
+
+.card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header {
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.form-control, .form-select {
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.table-responsive {
+  overflow-y: auto;
+}
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn-primary, .btn-success, .btn-danger, .btn-warning {
+  font-weight: 500;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.65rem;
+  font-weight: 500;
+}
+
+.form-label {
+  font-size: 0.95rem;
+  color: #212529;
+}
+
+.form-label.fw-500 {
+  font-weight: 500;
+}
+
+#suggestions {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+#suggestions .suggestion-card {
+  border-left: 4px solid var(--primary-color);
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+#suggestions .suggestion-card:hover {
+  background-color: #e8eef7;
+}
+
+#suggestions .suggestion-card.safe {
+  border-color: var(--success-color);
+  background: rgba(25, 135, 84, 0.05);
+}
+
+#suggestions .suggestion-card.safe:hover {
+  background: rgba(25, 135, 84, 0.1);
+}
+
+#suggestions .suggestion-card.reach {
+  border-color: var(--danger-color);
+  background: rgba(220, 53, 69, 0.05);
+}
+
+#suggestions .suggestion-card.reach:hover {
+  background: rgba(220, 53, 69, 0.1);
+}
+
+#suggestions .suggestion-card.match {
+  border-color: var(--primary-color);
+  background: rgba(13, 110, 253, 0.05);
+}
+
+#suggestions .suggestion-card.match:hover {
+  background: rgba(13, 110, 253, 0.1);
+}
+
+#suggestions .suggestion-card .fw-semibold {
+  font-size: 0.95rem;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+#suggestions .suggestion-card div {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.alert {
+  animation: slideIn 0.3s ease-in-out;
+  border-radius: 0.375rem;
+}
+
+.alert.d-none {
+  display: none !important;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.spinner-border {
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.text-end small {
+  font-size: 0.85rem;
+}
+
+.display-6 {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Universities Analytics Page */
+.region-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+}
+
+.region-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.region-btn.active {
+  transform: scale(1.05);
+}
+
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.nav-tabs .nav-link {
+  color: #6c757d;
+  border: none;
+  position: relative;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  background-color: transparent;
+  border-bottom: 3px solid var(--primary-color);
+}
+
+.tab-pane {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.progress {
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+}
+
+.progress-bar {
+  transition: width 0.6s ease;
+}
+
+/* Stats Cards */
+.stat-card {
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: left 0.5s ease;
+}
+
+.stat-card:hover::before {
+  left: 100%;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card.applications {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.stat-card.programs {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stat-card.universities {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-card h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.stat-card .stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-card .stat-icon {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.modal-header .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.chart-container {
+  position: relative;
+  height: 400px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Hover effects for interactive elements */
+.hover-highlight {
+  cursor: pointer;
+}
+
+.hover-highlight:hover {
+  background-color: rgba(13, 110, 253, 0.05) !important;
+  border-color: var(--primary-color) !important;
+}
+
+/* Loading state */
+.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main.container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    font-size: 0.95rem;
+  }
+
+  .stat-card .stat-value {
+    font-size: 2rem;
+  }
+
+  .nav-tabs {
+    flex-wrap: wrap;
+  }
+
+  .nav-tabs .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  #region-selector {
+    flex-direction: column;
+  }
+
+  .region-btn {
+    width: 100%;
+  }
+}

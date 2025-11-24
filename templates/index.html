@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}Home · CS Grad Insight{% endblock %}
+{% block content %}
+<header class="mb-4 text-center">
+  <h1 class="fw-bold">CS Grad Application Insight Platform</h1>
+  <p class="text-muted">
+    Explore anonymous outcomes, contribute your journey, and uncover suitable graduate programs.
+  </p>
+  <div class="d-flex justify-content-center gap-3 flex-wrap">
+    <a class="btn btn-primary" href="{{ url_for('explore_page') }}">Explore Data</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('dashboard_page') }}">My Dashboard</a>
+  </div>
+</header>
+
+<section class="row g-4 mb-5" id="stats-section">
+  <div class="col-md-4">
+    <div class="stat-card applications cursor-pointer" onclick="showApplicationsModal()" data-bs-toggle="tooltip" title="Click to explore applications">
+      <h4>📊 Total Applications</h4>
+      <div class="stat-value">
+        <span id="total-apps-display">{{ stats.total_applications }}</span>
+        <span style="font-size: 1.2rem; opacity: 0.7;">+</span>
+      </div>
+      <small style="opacity: 0.8;">Anonymized outcomes</small>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <a href="{{ url_for('universities_page') }}" class="text-decoration-none">
+      <div class="stat-card universities cursor-pointer" data-bs-toggle="tooltip" title="Explore universities">
+        <h4>🏫 Universities Covered</h4>
+        <div class="stat-value">
+          <span id="total-unis-display">{{ stats.universities }}</span>
+        </div>
+        <small style="opacity: 0.8;">Click to explore →</small>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card programs cursor-pointer" onclick="showProgramsModal()" data-bs-toggle="tooltip" title="Click to see program breakdown">
+      <h4>🎓 Programs Catalogued</h4>
+      <div class="stat-value">
+        <span id="total-progs-display">{{ stats.programs }}</span>
+      </div>
+      <small style="opacity: 0.8;">Diverse program types</small>
+    </div>
+  </div>
+</section>
+
+<section class="mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+    <h2 class="h4 m-0">Recently Added Records</h2>
+    <a href="{{ url_for('explore_page') }}" class="btn btn-sm btn-outline-primary">Open Explorer</a>
+  </div>
+  {% if stats.recent_applications %}
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>University</th>
+          <th>Program</th>
+          <th>Degree</th>
+          <th>Term</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app in stats.recent_applications %}
+        <tr>
+          <td>{{ app.university }}</td>
+          <td>{{ app.program }}</td>
+          <td>{{ app.degree or '-' }}</td>
+          <td>{{ app.term or '-' }}</td>
+          <td>{{ app.result }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-muted">No public data yet. Be the first to contribute!</p>
+  {% endif %}
+</section>
+
+<section>
+  <h2 class="h4">Get Started</h2>
+  <ol>
+    <li>Create a virtual environment and install <code>requirements.txt</code>.</li>
+    <li>Run <code>python scripts/init_db.py --with-sample</code> to seed demo data.</li>
+    <li>Start the dev server via <code>flask --app app run</code>.</li>
+    <li>Use the Explorer or Dashboard (or direct <code>/api</code>) to interact with data.</li>
+  </ol>
+</section>
+
+<!-- Applications Modal -->
+<div class="modal fade" id="applicationsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">📊 Applications Overview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-4" id="applications-stats">
+          <div class="col-md-6">
+            <div class="p-3 bg-light rounded">
+              <div class="text-muted small">Total Applications</div>
+              <div class="display-5" id="modal-total-apps">0</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 bg-light rounded">
+              <div class="text-muted small">Success Rate</div>
+              <div class="display-5" id="modal-success-rate">0%</div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <h6>Application Outcomes</h6>
+          <canvas id="applications-pie-chart" style="max-height: 250px;"></canvas>
+        </div>
+        <a href="{{ url_for('explore_page') }}" class="btn btn-primary w-100">Explore All Applications →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Programs Modal -->
+<div class="modal fade" id="programsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">🎓 Programs Distribution</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <h6>Top Programs by Application Count</h6>
+          <canvas id="programs-pie-chart" style="max-height: 300px;"></canvas>
+        </div>
+        <a href="{{ url_for('universities_page') }}" class="btn btn-primary w-100">View Detailed Program Analysis →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+<script src="{{ url_for('static', filename='js/index-analytics.js') }}" defer></script>
+{% endblock %}

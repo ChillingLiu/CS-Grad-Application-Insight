@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · CS Grad Insight{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+  <h1 class="h3 m-0">My Dashboard</h1>
+</div>
+
+<div id="dashboard-alert" class="alert d-none mt-3 mb-4" role="alert"></div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card shadow-sm h-100">
+      <div class="card-header bg-light border-bottom">
+        <h2 class="h5 m-0">Profile &amp; Background</h2>
+        <small class="text-muted">Personal info, education, and publications in one place</small>
+      </div>
+      <div class="card-body">
+        <section class="mb-4">
+          <h3 class="h6 text-uppercase text-muted mb-3">Profile Snapshot</h3>
+          <form id="profile-form" class="vstack gap-3">
+            <div>
+              <label class="form-label">Preferred Name</label>
+              <input class="form-control" name="preferred_name" placeholder="How you'd like to be addressed" />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">GRE Total</label>
+                <input class="form-control" name="gre_total" type="number" min="0" max="340" placeholder="e.g., 325" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">TOEFL Total</label>
+                <input class="form-control" name="toefl_total" type="number" min="0" max="120" placeholder="e.g., 110" />
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Recommendation Strength</label>
+                <select class="form-select" name="recommendation_strength">
+                  <option value="strong" selected>Strong</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="average">Average</option>
+                  <option value="">Not specified</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="research_experience" name="research_experience" />
+              <label class="form-check-label" for="research_experience">
+                <strong>Research experience</strong> (publications, labs, etc.)
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="internship_experience" name="internship_experience" />
+              <label class="form-check-label" for="internship_experience">
+                <strong>Internship experience</strong> (industry, startups, etc.)
+              </label>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <span class="spinner-border spinner-border-sm me-2 d-none" id="profile-loading"></span>
+              Save Profile
+            </button>
+          </form>
+        </section>
+
+        <hr />
+
+        <section class="mb-4">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div>
+              <h3 class="h6 text-uppercase text-muted mb-1">Education Background</h3>
+              <small class="text-muted">Used as the default GPA for analytics</small>
+            </div>
+            <button class="btn btn-sm btn-link p-0" id="education-reset" type="button">Reset form</button>
+          </div>
+          <form id="education-form" class="vstack gap-3">
+            <input type="hidden" name="education_id" />
+            <div class="row g-3">
+              <div class="col-md-7">
+                <label class="form-label">Institution <span class="text-danger">*</span></label>
+                <input class="form-control" name="institution" required placeholder="e.g., University of Washington" />
+              </div>
+              <div class="col-md-5">
+                <label class="form-label">Degree Level</label>
+                <select class="form-select" name="degree">
+                  <option value="">Not specified</option>
+                  <option>Undergraduate</option>
+                  <option>Master</option>
+                  <option>PhD</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-7">
+                <label class="form-label">Major / Field of Study</label>
+                <input class="form-control" name="field_of_study" placeholder="e.g., Computer Science" />
+              </div>
+              <div class="col-md-5">
+                <label class="form-label">Enrollment Years</label>
+                <div class="d-flex gap-2">
+                  <input class="form-control" name="start_year" type="number" min="1900" max="2100" placeholder="Start" />
+                  <input class="form-control" name="end_year" type="number" min="1900" max="2100" placeholder="End" />
+                </div>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">GPA</label>
+                <input class="form-control" name="gpa" type="number" min="0" step="0.01" placeholder="e.g., 3.90" />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">GPA Scale</label>
+                <select class="form-select" name="gpa_scale">
+                  <option value="">Select</option>
+                  <option value="4.0">4.0</option>
+                  <option value="10.0">10.0</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
+              <div class="col-md-4 d-flex align-items-center">
+                <div class="form-check mt-3">
+                  <input class="form-check-input" type="checkbox" id="currently_enrolled" name="currently_enrolled" />
+                  <label class="form-check-label" for="currently_enrolled">Currently enrolled</label>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-primary" type="submit">Save Education</button>
+              <button class="btn btn-outline-secondary d-none" type="button" id="education-cancel">Cancel editing</button>
+            </div>
+          </form>
+          <div class="table-responsive mt-4" style="max-height: 280px">
+            <table class="table table-sm align-middle">
+              <thead class="table-light position-sticky top-0">
+                <tr>
+                  <th>Institution</th>
+                  <th>Major</th>
+                  <th>Years</th>
+                  <th>GPA</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="education-table">
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-3">No education records yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <hr />
+
+        <section>
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div>
+              <h3 class="h6 text-uppercase text-muted mb-1">Publications</h3>
+              <small class="text-muted">List journals or conference papers</small>
+            </div>
+            <button class="btn btn-sm btn-link p-0" id="publication-reset" type="button">Reset form</button>
+          </div>
+          <form id="publication-form" class="vstack gap-3">
+            <input type="hidden" name="publication_id" />
+            <div>
+              <label class="form-label">Title <span class="text-danger">*</span></label>
+              <input class="form-control" name="title" required placeholder="e.g., Efficient Vision Transformer" />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Venue / Journal</label>
+                <input class="form-control" name="venue" placeholder="e.g., NeurIPS, IEEE T-PAMI" />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Year</label>
+                <input class="form-control" name="year" type="number" min="1900" max="2100" />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Tier</label>
+                <select class="form-select" name="journal_type">
+                  <option value="">Select</option>
+                  <option value="Q1">Q1</option>
+                  <option value="Q2">Q2</option>
+                  <option value="Q3">Q3</option>
+                  <option value="Q4">Q4</option>
+                </select>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Author Role</label>
+                <select class="form-select" name="author_type">
+                  <option value="First Author">First Author</option>
+                  <option value="Co-author">Co-author</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">URL</label>
+                <input class="form-control" name="url" type="url" placeholder="https://doi.org/..." />
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-primary" type="submit">Save Publication</button>
+              <button class="btn btn-outline-secondary d-none" type="button" id="publication-cancel">Cancel editing</button>
+            </div>
+          </form>
+          <div class="table-responsive mt-4" style="max-height: 280px">
+            <table class="table table-sm align-middle">
+              <thead class="table-light position-sticky top-0">
+                <tr>
+                  <th>Title</th>
+                  <th>Venue</th>
+                  <th>Year</th>
+                  <th>Tier</th>
+                  <th>Role</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="publication-table">
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-3">No publications recorded.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-header bg-light border-bottom">
+        <h2 class="h5 m-0">Add Application Result</h2>
+        <small class="text-muted">Record your application outcomes</small>
+      </div>
+      <div class="card-body">
+        <form id="application-form" class="vstack gap-3">
+          <div>
+            <label class="form-label">University <span class="text-danger">*</span></label>
+            <input class="form-control" name="university" required placeholder="e.g., Stanford University" />
+          </div>
+          <div>
+            <label class="form-label">Program <span class="text-danger">*</span></label>
+            <input class="form-control" name="program" required placeholder="e.g., MS Computer Science" />
+          </div>
+          <div class="row g-3">
+            <div class="col">
+              <label class="form-label">Degree</label>
+              <select class="form-select" name="degree">
+                <option value="">Not specified</option>
+                <option>MS</option>
+                <option>PhD</option>
+                <option>MEng</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="col">
+              <label class="form-label">Application Term <span class="text-danger">*</span></label>
+              <input class="form-control" name="term" required placeholder="e.g., Fall 2025" />
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Country / Region</label>
+            <input class="form-control" name="country" placeholder="e.g., USA, Canada" />
+          </div>
+          <div>
+            <label class="form-label">Application Result <span class="text-danger">*</span></label>
+            <select class="form-select" name="result" required>
+              <option value="">-- Please select --</option>
+              <option value="Admit">Admit</option>
+              <option value="Reject">Reject</option>
+              <option value="Waitlist">Waitlist</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Funding / Scholarship</label>
+            <input class="form-control" name="funding" placeholder="e.g., Full scholarship, TA/RA offer" />
+          </div>
+          <div>
+            <label class="form-label">Additional Notes</label>
+            <textarea class="form-control" name="notes" rows="2" placeholder="e.g., Interview result, special circumstances..."></textarea>
+          </div>
+          <button class="btn btn-success" type="submit">
+            <span class="spinner-border spinner-border-sm me-2 d-none" id="app-loading"></span>
+            Add Application
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-3">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-header bg-light border-bottom">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="h5 m-0">My Applications</h2>
+            <small class="text-muted">Track your application results</small>
+          </div>
+          <button class="btn btn-sm btn-outline-secondary" id="refresh-applications" title="Refresh application list">
+            <span class="spinner-border spinner-border-sm me-1 d-none" id="refresh-apps-spinner"></span>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive" style="max-height: 500px">
+          <table class="table table-sm align-middle mb-0">
+            <thead class="table-light position-sticky top-0">
+              <tr>
+                <th>University</th>
+                <th>Program</th>
+                <th>Term</th>
+                <th>Result</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="applications-table">
+              <tr>
+                <td colspan="5" class="text-center text-muted py-4">Loading applications...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="empty-applications-msg" class="alert alert-info m-3 mb-0 d-none" role="alert">
+          No applications recorded yet. Add one using the form above!
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm h-100">
+      <div class="card-header bg-light border-bottom">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="h5 m-0">Program Recommendations</h2>
+            <small class="text-muted">Based on your profile</small>
+          </div>
+          <button class="btn btn-sm btn-outline-primary" id="refresh-suggestions" title="Refresh match suggestions">
+            <span class="spinner-border spinner-border-sm me-1 d-none" id="refresh-sugg-spinner"></span>
+            Update
+          </button>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <div id="suggestions" class="small p-3" style="max-height: 500px; overflow-y: auto">
+          <p class="text-muted text-center py-4">Loading suggestions...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+{% endblock %}
