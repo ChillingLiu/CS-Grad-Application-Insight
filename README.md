@@ -122,31 +122,31 @@ against the `/api/*` endpoints.
 ## 5. Relationship Analysis
 
 - University and Program (1:M)
-One University can have many Programs (at least one). One Program belongs to only one University.
+  - One University can have many Programs (at least one). One Program belongs to only one University.
 
 - ApplicantAccount and Education (1:M)
-One ApplicantAccount can have many Education records (at least one). One Education record belongs to only one ApplicantAccount.
+  - One ApplicantAccount can have many Education records (at least one). One Education record belongs to only one ApplicantAccount.
 
 - University and Education (1:M)
-One University can be referenced in many Education records (can be zero). One Education record references only one University.
+  - One University can be referenced in many Education records (can be zero). One Education record references only one University.
 
 - ApplicantAccount and Scores (1:M)
-One ApplicantAccount can have many Scores records (can be zero). One Scores record belongs to only one ApplicantAccount.
+  - One ApplicantAccount can have many Scores records (can be zero). One Scores record belongs to only one ApplicantAccount.
 
 - ApplicantAccount and Experience (1:M)
-One ApplicantAccount can have many Experience records (can be zero). One Experience record belongs to only one ApplicantAccount.
+  - One ApplicantAccount can have many Experience records (can be zero). One Experience record belongs to only one ApplicantAccount.
 
 - ApplicantAccount and RecommendationLetter (1:M)
-One ApplicantAccount can have many RecommendationLetter records (can be zero). One RecommendationLetter record belongs to only one ApplicantAccount.
+  - One ApplicantAccount can have many RecommendationLetter records (can be zero). One RecommendationLetter record belongs to only one ApplicantAccount.
 
 - ApplicantAccount and Publication (1:M)
-One ApplicantAccount can have many Publication records (can be zero). One Publication record belongs to only one ApplicantAccount. (It could be M:N for authors and publications, but here we only consider the number of publications an application has.)
+  - One ApplicantAccount can have many Publication records (can be zero). One Publication record belongs to only one ApplicantAccount. (It could be M:N for authors and publications, but here we only consider the number of publications an application has.)
 
 - ApplicantAccount and Application (1:M)
-One ApplicantAccount can have many Application records (at least one). One Application record belongs to only one ApplicantAccount.
+  - One ApplicantAccount can have many Application records (at least one). One Application record belongs to only one ApplicantAccount.
 
 -  ApplicantAccount and Program (M:N) - (via Application table)
-One ApplicantAccount can have many applications, which can be associated with many Programs. One Program can be associated with many applications from many ApplicantAccounts.
+  - One ApplicantAccount can have many applications, which can be associated with many Programs. One Program can be associated with many applications from many ApplicantAccounts.
 
 - ApplicantAccount and Program (1:M) - (via FinalDecisionProgramID)
-This is a special relationship. One Program can be chosen as the final decision by many ApplicantAccounts (can be zero). One ApplicantAccount can choose one or zero (before the decision deadline) Program as his/her final decision.
+  - This is a special relationship. One Program can be chosen as the final decision by many ApplicantAccounts (can be zero). One ApplicantAccount can choose one or zero (before the decision deadline) Program as his/her final decision.
